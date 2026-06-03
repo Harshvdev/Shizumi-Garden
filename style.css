@@ -80,7 +80,7 @@ body {
 
 /* --- Growth Stage 1 (2-3 words found) --- */
 #garden-visualization.growth-stage-1 {
-    background-image: url('publicstages/stage1.png'); /* !! PROVIDE THIS IMAGE !! */
+    background-image: url('public/stages/stage1.png'); /* !! PROVIDE THIS IMAGE !! */
     background-color: rgba(190, 225, 190, 0.6); /* Slightly greener */
     opacity: 0.85;
     transform: scale(1.01);
@@ -104,7 +104,7 @@ body {
 
 /* --- Growth Stage 4 (8 words found - All words) --- */
 #garden-visualization.growth-stage-4 {
-    background-image: url('public/stages/stage4.png'); /* !! PROVIDE THIS IMAGE !! */
+    background-image: url('publistages/stage4.png'); /* !! PROVIDE THIS IMAGE !! */
     background-color: rgba(100, 180, 100, 0.9); /* Most vibrant */
     opacity: 1;
     transform: scale(1.04); /* Max scale */
