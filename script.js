@@ -30,7 +30,7 @@ let canvas, ctx;
 let firefliesArray = [];
 let fireflyAnimationId = null;
 
-// --- DOM Target Handlers ---
+// --- DOM Component Targets ---
 const gridContainer = document.getElementById('grid-container'); //
 const wordListElement = document.getElementById('word-list'); //
 const gardenVisualizationElement = document.getElementById('garden-visualization'); //
@@ -139,7 +139,7 @@ function playAudio(soundPath) { //
     try {
         const audio = new Audio(soundPath); //
         audio.currentTime = 0; //
-        audio.play().catch(() => console.warn("Audio interaction deferred until touch event.")); //
+        audio.play().catch(() => console.warn("Audio timeline deferred until direct viewport tap loop.")); //
     } catch (error) { console.error(error); } //
 }
 
@@ -165,7 +165,7 @@ function showMindfulnessMoment(word) { //
     mindfulnessPopupElement.classList.remove('win-message'); //
     if (mindfulnessPopupElement.hideTimeout) clearTimeout(mindfulnessPopupElement.hideTimeout); //
     mindfulnessPopupElement.classList.add('show'); //
-    mindfulnessPopupElement.hideTimeout = setTimeout(() => { mindfulnessPopupElement.classList.remove('show'); }, 4000); 
+    mindfulnessPopupElement.hideTimeout = setTimeout(() => { mindfulnessPopupElement.classList.remove('show'); }, 4000); //
 }
 
 function checkWinCondition() { return foundWords.size === wordsToFind.length; } //
@@ -284,107 +284,107 @@ function addGridListeners() { //
 }
 
 // ==========================================================================
-// FIX: Fine Particle Anime Fireflies Simulation Engine
+// Volumetric Fireflies Simulation Engine (Drift Tracking Fixed)
 // ==========================================================================
 class Firefly {
     constructor() {
         this.reset();
-        this.y = Math.random() * canvas.height; 
+        this.y = Math.random() * canvas.height; //
     }
     reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = canvas.height + 15;
-        // FIX: Reduced base particle size for a subtle, natural drift (matching your reference image style)
-        this.size = Math.random() * 0.9 + 0.4; 
-        this.speedY = Math.random() * 0.22 + 0.08;
-        this.speedX = Math.random() * 0.2 - 0.1;
-        this.alpha = 0;
-        this.fadeSpeed = Math.random() * 0.01 + 0.003;
-        this.isFadingIn = true;
-        this.angle = Math.random() * Math.PI;
-        this.frequency = Math.random() * 0.01 + 0.003;
+        this.x = Math.random() * canvas.width; //
+        this.y = canvas.height + 15; //
+        this.size = Math.random() * 0.9 + 0.4; //
+        this.speedY = Math.random() * 0.22 + 0.08; //
+        // FIX: Perfectly balanced speed offsets prevent unilateral screen clustering bugs
+        this.speedX = (Math.random() - 0.5) * 0.24; 
+        this.alpha = 0; //
+        this.fadeSpeed = Math.random() * 0.01 + 0.003; //
+        this.isFadingIn = true; //
+        this.angle = Math.random() * Math.PI; //
+        this.frequency = Math.random() * 0.01 + 0.003; //
     }
     update() {
-        this.y -= this.speedY;
-        this.angle += this.frequency;
-        this.x += this.speedX + Math.sin(this.angle) * 0.12;
+        this.y -= this.speedY; //
+        this.angle += this.frequency; //
+        this.x += this.speedX + Math.sin(this.angle) * 0.12; //
 
         if (this.isFadingIn) {
-            this.alpha += this.fadeSpeed;
-            if (this.alpha >= 0.8) this.isFadingIn = false;
+            this.alpha += this.fadeSpeed; //
+            if (this.alpha >= 0.8) this.isFadingIn = false; //
         } else {
             if (this.y < canvas.height * 0.12) {
-                this.alpha -= this.fadeSpeed;
+                this.alpha -= this.fadeSpeed; //
             }
         }
 
+        // Keep bounds checking responsive to viewport-locked structures
         if (this.y < -15 || this.x < -15 || this.x > canvas.width + 15 || this.alpha <= 0) {
-            this.reset();
+            this.reset(); //
         }
     }
     draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
+        ctx.save(); //
+        ctx.globalAlpha = this.alpha; //
         
-        // FIX: Re-tuned gradient radius bounds down from 7x to 3x for high-intensity, pinpoint light embers
-        let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 3.2);
+        let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 3.2); //
         
-        const isNight = document.body.classList.contains('night-mode');
-        if (isNight) {
-            // High-density sharp green-yellow core bloom
-            gradient.addColorStop(0, '#ffffff');
-            gradient.addColorStop(0.2, '#f6ffb3');
-            gradient.addColorStop(0.5, 'rgba(163, 230, 53, 0.5)');
-            gradient.addColorStop(1, 'rgba(163, 230, 53, 0)');
+        // Read properties dynamically depending on modifying daylight classes
+        const isDayMode = document.body.classList.contains('day-mode'); 
+        
+        if (!isDayMode) {
+            gradient.addColorStop(0, '#ffffff'); //
+            gradient.addColorStop(0.2, '#f6ffb3'); //
+            gradient.addColorStop(0.5, 'rgba(163, 230, 53, 0.5)'); //
+            gradient.addColorStop(1, 'rgba(163, 230, 53, 0)'); //
         } else {
-            // Delicate Sunrise Soft Golden Core Bloom
-            gradient.addColorStop(0, '#ffffff');
-            gradient.addColorStop(0.2, '#fff3cc');
-            gradient.addColorStop(0.5, 'rgba(230, 126, 34, 0.4)');
-            gradient.addColorStop(1, 'rgba(230, 126, 34, 0)');
+            gradient.addColorStop(0, '#ffffff'); //
+            gradient.addColorStop(0.2, '#fff3cc'); //
+            gradient.addColorStop(0.5, 'rgba(230, 126, 34, 0.4)'); //
+            gradient.addColorStop(1, 'rgba(230, 126, 34, 0)'); //
         }
         
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size * 3.2, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
+        ctx.fillStyle = gradient; //
+        ctx.beginPath(); //
+        ctx.arc(this.x, this.y, this.size * 3.2, 0, Math.PI * 2); //
+        ctx.fill(); //
+        ctx.restore(); //
     }
 }
 
 function initFireflies() {
-    canvas = document.getElementById('fireflies-canvas');
-    ctx = canvas.getContext('2d');
-    resizeCanvas();
-    firefliesArray = [];
-    // Balanced ambient count ensures fireflies feel natural without cluttering the screen
-    for (let i = 0; i < 40; i++) {
-        firefliesArray.push(new Firefly());
+    canvas = document.getElementById('fireflies-canvas'); //
+    ctx = canvas.getContext('2d'); //
+    resizeCanvas(); //
+    firefliesArray = []; //
+    for (let i = 0; i < 40; i++) { //
+        firefliesArray.push(new Firefly()); //
     }
 }
 
 function resizeCanvas() {
-    if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    if (!canvas) return; //
+    canvas.width = window.innerWidth; //
+    canvas.height = window.innerHeight; //
 }
 
 function animateFireflies() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); //
     firefliesArray.forEach(f => {
-        f.update();
-        f.draw();
+        f.update(); //
+        f.draw(); //
     });
-    fireflyAnimationId = requestAnimationFrame(animateFireflies);
+    fireflyAnimationId = requestAnimationFrame(animateFireflies); //
 }
 
-window.addEventListener('resize', resizeCanvas);
+window.addEventListener('resize', resizeCanvas); //
 
 // ==========================================================================
 // Theme Initialization System
 // ==========================================================================
 function toggleAmbientTheme() {
-    document.body.classList.toggle('night-mode'); //
+    // Toggles the custom day override wrapper since night rules are baseline
+    document.body.classList.toggle('day-mode'); 
 }
 
 ambientToggle.addEventListener('click', toggleAmbientTheme); //

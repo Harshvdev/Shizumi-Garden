@@ -2,51 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shizumi Garden - Zen Word Find</title>
-    
-    <!-- Immersive Cinematic Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="day-mode">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shizumi Garden - Zen Word Find</title> <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> </head>
+<body class="night-mode">
 
-    <!-- Canvas layer for fireflies sitting above components to follow user cursor paths -->
     <canvas id="fireflies-canvas"></canvas>
 
-    <!-- Ambient Theme Controller Button -->
     <div id="ambient-toggle" title="Toggle Day/Night Cycle" aria-label="Toggle Day/Night Cycle">
         <div class="toggle-icon"></div>
     </div>
 
-    <div id="game-container">
-        <div id="game-workspace">
+    <div id="game-container"> <div id="game-workspace">
             
-            <!-- Column 1: Garden Art Stage Viewport Frame -->
             <div id="garden-visualization-container">
-                <div id="garden-visualization"></div>
-            </div>
+                <div id="garden-visualization"></div> </div>
 
-            <!-- Column 2: Core Puzzle Interface -->
-            <div id="grid-wrapper">
-                <h1 id="game-title">Shizumi Garden</h1>
-                <div id="grid-container"></div>
-            </div>
+            <div id="grid-wrapper"> <h1 id="game-title">Shizumi Garden</h1> <div id="grid-container"></div> </div>
 
-            <!-- Column 3: Thematic Word Pool Panel -->
-            <div id="controls-container">
-                <div id="word-list-container">
-                    <h2>Words to Find</h2>
-                    <ul id="word-list"></ul>
-                </div>
+            <div id="controls-container"> <div id="word-list-container"> <h2>Words to Find</h2> <ul id="word-list"></ul> </div>
             </div>
             
         </div>
 
-        <!-- Floating Dialogue System (Repositioned to protect active puzzle grids) -->
-        <div id="mindfulness-popup"></div>
-    </div>
+        <div id="mindfulness-popup"></div> </div>
 
-    <script src="script.js"></script>
-</body>
+    <script src="script.js"></script> </body>
 </html>
